@@ -92,7 +92,6 @@ function NewEl(props) {
 }
 
 export default function App() {
-  const [zoomLevel, setZoomLevel] = useState(1);
   const [nodes, setNodes] = useState(primaryNodes);
   const [instance, setInstance] = useState(null);
   const container = useRef(null);
@@ -122,20 +121,6 @@ export default function App() {
 
     setInstance(toolkit);
   }, []);
-
-  const handleZoomIn = () => {
-    const newZoomLevel = zoomLevel + 0.25;
-    instance.setZoom(newZoomLevel);
-    console.log(instance.getZoom());
-    console.log(instance);
-    setZoomLevel(newZoomLevel);
-  };
-
-  const handleZoomOut = () => {
-    const newZoomLevel = zoomLevel - 0.25;
-    instance.setZoom(newZoomLevel);
-    setZoomLevel(newZoomLevel);
-  };
 
   const handleShowConnection = () => {
     const connections = instance.getAllConnections();
@@ -176,8 +161,6 @@ export default function App() {
         })}
       </div>
       <div id="miniview" />
-      <button onClick={handleZoomIn}>zoom in</button>
-      <button onClick={handleZoomOut}>zoom out</button>
       <button onClick={handleShowConnection}>Connections</button>
 
       <button onClick={addCustomNode}>Add Node</button>

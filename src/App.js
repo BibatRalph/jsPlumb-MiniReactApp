@@ -15,50 +15,31 @@ const endpointOptions = {
 
 const primaryNodes = [
   {
-    name: "first",
+    name: "1",
     styleProps: { top: "80px", left: "250px" },
     id: "e1"
   },
   {
-    name: "second",
+    name: "2",
     styleProps: { top: "160px", left: "150px" },
     id: "e2",
     target: "e1"
   },
   {
-    name: "third",
+    name: "3",
     styleProps: { top: "160px", left: "350px" },
     id: "e3",
     target: "e1"
   },
   {
-    name: "forth",
+    name: "4",
     styleProps: { top: "260px", left: "50px" },
     id: "e4",
-    target: "e2"
-  },
-  {
-    name: "fifth",
-    styleProps: { top: "260px", left: "250px" },
-    id: "e5",
     target: "e2"
   }
 ];
 
-// let secondInstance = jsPlumb.getInstance({
-//   PaintStyle: {
-//     strokeWidth: 2,
-//     stroke: "#567567",
-//     outlineWidth: 1
-//   },
-//   Connector: ["Bezier", { curviness: 20 }],
-//   Endpoint: ["Dot", { radius: 5 }],
-//   EndpointStyle: { fill: "#567567" },
-//   Anchors: ["TopCenter", "BottomCenter"]
-//   // Container: container.current
-// });
-
-function NewEl(props) {
+function Element(props) {
   const el = useRef(null);
   const { name, target, id, styleProps = {}, instance } = props;
 
@@ -111,14 +92,6 @@ export default function App() {
     });
 
     console.log(toolkit);
-    // var surface = jsPlumb.render({
-    //   container: container.current,
-    //   miniview:{
-    //     container:"someMiniContainerId"
-    //   }
-    // });
-    // var miniview = surface.getMiniview();
-
     setInstance(toolkit);
   }, []);
 
@@ -131,9 +104,9 @@ export default function App() {
     setNodes((prev) => [
       ...prev,
       {
-        name: "custom",
+        name: "New",
         styleProps: { top: "260px", left: "420px" },
-        id: `custom_${Math.random()}`,
+        id: `New_${Math.random()}`,
         target: "e2",
         instance: instance
       }
@@ -150,7 +123,7 @@ export default function App() {
       <div ref={container} id="drawing" className="App">
         {nodes.map((item) => {
           return (
-            <NewEl
+            <Element
               name={item.name}
               styleProps={item.styleProps}
               id={item.id}
@@ -161,10 +134,9 @@ export default function App() {
         })}
       </div>
       <div id="miniview" />
-      <button onClick={handleShowConnection}>Connections</button>
-
-      <button onClick={addCustomNode}>Add Node</button>
-      <button onClick={addDeleteNode}>Delete All connections</button>
+      <button onClick={handleShowConnection}>Console log Connection</button>
+      <button onClick={addCustomNode}>Add Element</button>
+      <button onClick={addDeleteNode}>Delete All</button>
     </>
   );
 }

@@ -1,9 +1,7 @@
-// import {Connections} from 'index';
 import debounce from "lodash.debounce";
 import React, { PureComponent } from "react";
 import { AutoSizer } from "react-virtualized";
 import { Graph, Node, NodeContent } from "jsplumb-react";
-// import './Diagram.css';
 
 const style = {
   height: 50
@@ -95,7 +93,6 @@ export default class Diagram extends PureComponent {
           onAddConnection={this.handleAddConnection}
           onRemoveConnection={this.handleRemoveConnection}
           onPanEnd={this.handlePanEnd}
-          onZoom={this.handleZoom}
           scale={this.state.scale}
           width={this.state.width}
           xOffset={this.state.xOffset}
@@ -133,10 +130,6 @@ export default class Diagram extends PureComponent {
 
   handlePanEnd = (xOffset, yOffset) => {
     this.setState({ xOffset, yOffset });
-  };
-
-  handleZoom = (scale) => {
-    this.setState({ scale });
   };
 
   handleDrop = (id, x, y) => {

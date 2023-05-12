@@ -5,12 +5,12 @@ import "./styles.css";
 const endpointOptions = {
   isSource: true,
   isTarget: true,
-  connector: ["Bezier", { curviness: 175 }],
-  connectorStyle: { strokeWidth: 2, stroke: "red" },
+  connector: ["Flowchart", { curviness: 175 }],
+  connectorStyle: { strokeWidth: 1, stroke: "red" },
   scope: "blueline",
   dragAllowedWhenFull: false,
   maxConnections: 5,
-  endpoint: "Dot"
+  endpoint: "Dot" 
 };
 
 const primaryNodes = [
@@ -35,24 +35,25 @@ const primaryNodes = [
     name: "4",
     styleProps: { top: "260px", left: "50px" },
     id: "e4",
-    target: "e2"
+    target: "e3"
   }
 ];
 
 function Element(props) {
-  const el = useRef(null);
+  const element = useRef(null);
   const { name, target, id, styleProps = {}, instance } = props;
 
   useEffect(() => {
     instance &&
-      instance.draggable(el.current, {
+      instance.draggable(element.current, {
         grid: [24, 32],
         drag: function () {
           instance.repaintEverything();
         }
       });
     instance &&
-      instance.addEndpoint(el.current, { anchor: "Left" }, endpointOptions);
+    // Add endpoint
+      instance.addEndpoint(element.current, { anchor: "Right" }, endpointOptions);
   }, [instance]);
 
   useEffect(() => {
@@ -66,7 +67,7 @@ function Element(props) {
   }, [target, id, instance]);
 
   return (
-    <div ref={el} id={id} className="box" style={styleProps}>
+    <div ref={element} id={id} className="box" style={styleProps}>
       <h2>{name}</h2>
     </div>
   );
@@ -77,22 +78,24 @@ export default function App() {
   const [instance, setInstance] = useState(null);
   const container = useRef(null);
 
+  //GET INSTANCE OF JS PLUMB
   useEffect(() => {
-    const toolkit = jsPlumb.getInstance({
+    const Instnc = jsPlumb.getInstance({
       PaintStyle: {
-        strokeWidth: 2,
+        strokeWidth: 1,
         stroke: "#567567",
         outlineWidth: 1
       },
-      Connector: ["Bezier", { curviness: 20 }],
+      Connector: ["Flowchart", { curviness: 20 }],
       Endpoint: ["Dot", { radius: 1 }],
       EndpointStyle: { fill: "#567567" },
-      Anchors: ["TopCenter", "BottomCenter"],
+      Anchors: ["Right", "Right"],
       Container: container.current
     });
 
-    console.log(toolkit);
-    setInstance(toolkit);
+    console.log(Instnc);
+    //using useEffect to set instance
+    setInstance(Instnc);
   }, []);
 
   const handleShowConnection = () => {
@@ -120,6 +123,10 @@ export default function App() {
 
   return (
     <>
+      <div id="miniview" />
+      <button onClick={handleShowConnection}>Console log Connection</button>
+      <button onClick={addCustomNode}>Add Element</button>
+      <button onClick={addDeleteNode}>Delete All</button>
       <div ref={container} id="drawing" className="App">
         {nodes.map((item) => {
           return (
@@ -133,10 +140,6 @@ export default function App() {
           );
         })}
       </div>
-      <div id="miniview" />
-      <button onClick={handleShowConnection}>Console log Connection</button>
-      <button onClick={addCustomNode}>Add Element</button>
-      <button onClick={addDeleteNode}>Delete All</button>
     </>
   );
 }

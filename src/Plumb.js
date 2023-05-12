@@ -3,6 +3,7 @@ import React, { PureComponent } from "react";
 import { AutoSizer } from "react-virtualized";
 import { Graph, Node, NodeContent } from "jsplumb-react";
 
+
 const style = {
   height: 50
 };

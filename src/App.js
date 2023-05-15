@@ -12,7 +12,7 @@ const OptObj = {
   scope: "blueline",
   dragAllowedWhenFull: false,
   maxConnections: 5,
-  endpoint: "Dot" 
+  endpoint: "Dot" ` `
 };
 
 const primaryNodes = [

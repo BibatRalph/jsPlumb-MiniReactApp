@@ -2,11 +2,13 @@ import React, { useEffect, useRef, useState } from "react";
 import { jsPlumb } from "jsplumb";
 import "./styles.css";
 
-const endpointOptions = {
+//OptionOjb
+const OptObj = {
   isSource: true,
   isTarget: true,
   connector: ["Flowchart", { curviness: 175 }],
   connectorStyle: { strokeWidth: 1, stroke: "red" },
+  hoverPaintStyle: {stroke: "red", strokeWidth: 2},
   scope: "blueline",
   dragAllowedWhenFull: false,
   maxConnections: 5,
@@ -24,18 +26,6 @@ const primaryNodes = [
     styleProps: { top: "160px", left: "150px" },
     id: "e2",
     target: "e1"
-  },
-  {
-    name: "3",
-    styleProps: { top: "160px", left: "350px" },
-    id: "e3",
-    target: "e1"
-  },
-  {
-    name: "4",
-    styleProps: { top: "260px", left: "50px" },
-    id: "e4",
-    target: "e3"
   }
 ];
 
@@ -46,14 +36,14 @@ function Element(props) {
   useEffect(() => {
     instance &&
       instance.draggable(element.current, {
-        grid: [24, 32],
+        grid: [14, 22],
         drag: function () {
           instance.repaintEverything();
         }
       });
     instance &&
     // Add endpoint
-      instance.addEndpoint(element.current, { anchor: "Right" }, endpointOptions);
+      instance.addEndpoint(element.current, { anchor: "Right" }, OptObj);
   }, [instance]);
 
   useEffect(() => {
@@ -92,42 +82,47 @@ export default function App() {
       Anchors: ["Right", "Right"],
       Container: container.current
     });
-
     console.log(Instnc);
     //using useEffect to set instance
     setInstance(Instnc);
   }, []);
 
-  const handleShowConnection = () => {
-    const connections = instance.getAllConnections();
-    console.log(connections);
+  const ShowConnection = () => {
+    const conn = instance.getAllConnections();
+    console.log(conn);
   };
-
-  const addCustomNode = () => {
+  
+  const New = () => {
     setNodes((prev) => [
       ...prev,
       {
         name: "New",
         styleProps: { top: "260px", left: "420px" },
         id: `New_${Math.random()}`,
-        target: "e2",
-        instance: instance
+        instance: instance,
+        
       }
+      
     ]);
   };
-
-  const addDeleteNode = () => {
-    const connections = instance.deleteEveryEndpoint();
-    console.log(connections);
+  const DeleteOne = () => {
+    //Target node ID 
+    jsPlumb.remove(nodes[2].id, false, [false]) 
+  
+  };
+  
+  const Delete = () => {
+    instance.deleteEveryEndpoint();
   };
 
   return (
     <>
-      <div id="miniview" />
-      <button onClick={handleShowConnection}>Console log Connection</button>
-      <button onClick={addCustomNode}>Add Element</button>
-      <button onClick={addDeleteNode}>Delete All</button>
-      <div ref={container} id="drawing" className="App">
+      <button onClick={ShowConnection}>Console log Connection</button>
+      <div></div>
+      <button onClick={New}>Add Element</button>
+      <button onClick={DeleteOne}>Delete Prev</button>
+      <button onClick={Delete}>Delete All</button>
+      <div ref={container}>
         {nodes.map((item) => {
           return (
             <Element

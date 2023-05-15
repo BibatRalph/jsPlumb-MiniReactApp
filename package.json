@@ -10,8 +10,7 @@
     "lodash": "4.17.20",
     "react": "17.0.0",
     "react-dom": "17.0.0",
-    "react-scripts": "3.4.3",
-    "react-virtualized": "9.22.3"
+    "react-scripts": "3.4.3"
   },
   "devDependencies": {
     "typescript": "3.8.3"

@@ -29,9 +29,10 @@ const primaryNodes = [
   }
 ];
 
-function Element(props) {
+function Element(item) {
+
+  const { name, target, id, styleProps = {}, instance } = item;
   const element = useRef(null);
-  const { name, target, id, styleProps = {}, instance } = props;
 
   useEffect(() => {
     instance &&
@@ -44,7 +45,13 @@ function Element(props) {
     instance &&
     // Add endpoint
       instance.addEndpoint(element.current, { anchor: "Right" }, OptObj);
+    instance &&
+      instance.bind("connection", () => {
+        alert("Connected");
+      });
   }, [instance]);
+
+
 
   useEffect(() => {
     target &&
@@ -52,10 +59,8 @@ function Element(props) {
       instance.connect({
         source: id,
         target,
-        scope: "someScope"
       });
   }, [target, id, instance]);
-
   return (
     <div ref={element} id={id} className="box" style={styleProps}>
       <h2>{name}</h2>
@@ -67,6 +72,10 @@ export default function App() {
   const [nodes, setNodes] = useState(primaryNodes);
   const [instance, setInstance] = useState(null);
   const container = useRef(null);
+
+  useEffect(() => {
+    // alert("Connected");
+   }, []);
 
   //GET INSTANCE OF JS PLUMB
   useEffect(() => {
@@ -84,13 +93,8 @@ export default function App() {
     });
     console.log(Instnc);
     //using useEffect to set instance
-    setInstance(Instnc);
+    setInstance(Instnc);  
   }, []);
-
-  const ShowConnection = () => {
-    const conn = instance.getAllConnections();
-    console.log(conn);
-  };
   
   const New = () => {
     setNodes((prev) => [
@@ -100,15 +104,13 @@ export default function App() {
         styleProps: { top: "260px", left: "420px" },
         id: `New_${Math.random()}`,
         instance: instance,
-        
       }
       
     ]);
   };
   const DeleteOne = () => {
     //Target node ID 
-    jsPlumb.remove(nodes[2].id, false, [false]) 
-  
+    instance.remove(nodes[2].id, false, [false]);
   };
   
   const Delete = () => {
@@ -117,10 +119,10 @@ export default function App() {
 
   return (
     <>
-      <button onClick={ShowConnection}>Console log Connection</button>
-      <div></div>
+
       <button onClick={New}>Add Element</button>
-      <button onClick={DeleteOne}>Delete Prev</button>
+      <div></div>
+      <button onClick={DeleteOne}>Delete</button>
       <button onClick={Delete}>Delete All</button>
       <div ref={container}>
         {nodes.map((item) => {
